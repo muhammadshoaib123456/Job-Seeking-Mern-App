@@ -1,21 +1,29 @@
 
 // use this file for authorization of user when he login so it authorize through his token match it and authorize the user
-import { User } from "../models/userSchema.js";
-import { catchAsyncErrors } from "./catchAsyncError.js";
-import ErrorHandler from "./error.js";
 import jwt from "jsonwebtoken";
+import { User } from "../models/userSchema.js";
+import ErrorHandler from "./error.js";
+import catchAsyncError from "./catchAsyncError.js";
 
-export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies;
-  if (!token) {
-    return next(new ErrorHandler("User Not Authorized", 401));
+export const isAuthenticated = catchAsyncError(async (req, res, next) => {
+  const { authorization } = req.headers;
+
+  if (!authorization || !authorization.startsWith("Bearer ")) {
+    return next(new ErrorHandler("Unauthorized, please login first.", 401));
   }
+
+  const token = authorization.split(" ")[1];
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-  req.user = await User.findById(decoded.id);
+  const user = await User.findById(decoded.id);
+  if (!user) {
+    return next(new ErrorHandler("User not found", 401));
+  }
 
+  req.user = user;
   next();
 });
+
 
 
 

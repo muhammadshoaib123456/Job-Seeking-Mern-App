@@ -1,10 +1,10 @@
-import React, {useEffect, useContext} from 'react'
-import "./App.css"
+import React, { useEffect, useContext } from 'react';
+import "./App.css";
 import { Context } from './main';
 import Login from './components/Auth/login';
 import Register from './components/Auth/register';
 import Navbar from './components/Layout/navbar';
-import  Footer  from './components/Layout/footer';
+import Footer from './components/Layout/footer';
 import Home from './components/Home/home';
 import Jobs from './components/Job/jobs';
 import JobDetails from './components/Job/jobDetails';
@@ -16,50 +16,57 @@ import NotFound from './components/NotFound/notFound';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.get(
           "https://job-seeking-mern-app-8ujq.vercel.app/api/v1/user/getuser",
           {
-            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
+
         setUser(response.data.user);
         setIsAuthorized(true);
       } catch (error) {
         setIsAuthorized(false);
       }
     };
+
     fetchUser();
-  }, [isAuthorized]);
+  }, []); // ✅ Only run once on mount
 
   return (
-    <>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/job/getall" element={<Jobs />} />
-          <Route path="/job/:id" element={<JobDetails />} />
-          <Route path="/application/:id" element={<Application />} />
-          <Route path="/applications/me" element={<MyApplications />} />
-          <Route path="/job/post" element={<PostJobs />} />
-          <Route path="/job/me" element={<MyJobs />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-        <Toaster />
-      </Router>
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/job/getall" element={<Jobs />} />
+        <Route path="/job/:id" element={<JobDetails />} />
+        <Route path="/application/:id" element={<Application />} />
+        <Route path="/applications/me" element={<MyApplications />} />
+        <Route path="/job/post" element={<PostJobs />} />
+        <Route path="/job/me" element={<MyJobs />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+      <Toaster />
+    </Router>
   );
 };
 
 export default App;
+
 
 
 
