@@ -19,55 +19,48 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-
         const response = await axios.get(
           "https://job-seeking-mern-app-8ujq.vercel.app/api/v1/user/getuser",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true,
           }
         );
-
         setUser(response.data.user);
         setIsAuthorized(true);
       } catch (error) {
         setIsAuthorized(false);
       }
     };
-
     fetchUser();
-  }, []); // ✅ Only run once on mount
+  }, [isAuthorized]);
 
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/job/getall" element={<Jobs />} />
-        <Route path="/job/:id" element={<JobDetails />} />
-        <Route path="/application/:id" element={<Application />} />
-        <Route path="/applications/me" element={<MyApplications />} />
-        <Route path="/job/post" element={<PostJobs />} />
-        <Route path="/job/me" element={<MyJobs />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-      <Toaster />
-    </Router>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/job/getall" element={<Jobs />} />
+          <Route path="/job/:id" element={<JobDetails />} />
+          <Route path="/application/:id" element={<Application />} />
+          <Route path="/applications/me" element={<MyApplications />} />
+          <Route path="/job/post" element={<PostJob />} />
+          <Route path="/job/me" element={<MyJobs />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+        <Toaster />
+      </BrowserRouter>
+    </>
   );
 };
 
 export default App;
-
-
 
 
 
