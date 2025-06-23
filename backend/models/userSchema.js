@@ -2,56 +2,56 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minLength: [3, "Name must contain at least 3 characters"],
-    maxLength: [30, "Name must not exceed 30 characters"],
+    required: [true, "Please enter your Name!"],
+    minLength: [3, "Name must contain at least 3 Characters!"],
+    maxLength: [30, "Name cannot exceed 30 Characters!"],
   },
   email: {
     type: String,
-    required: [true, "Please provide an email"],
-    unique: true, // ✅ Ensures no duplicate emails
-    validate: [validator.isEmail, "Please provide a valid email"],
+    required: [true, "Please enter your Email!"],
+    validate: [validator.isEmail, "Please provide a valid Email!"],
   },
   phone: {
     type: Number,
-    required: [true, "Please provide a valid phone number"],
+    required: [true, "Please enter your Phone Number!"],
   },
   password: {
     type: String,
-    required: true,
-    minLength: [8, "Password must be at least 8 characters"],
-    maxLength: [32, "Password must not exceed 32 characters"],
-    select: false, // ✅ hide password by default
+    required: [true, "Please provide a Password!"],
+    minLength: [8, "Password must contain at least 8 characters!"],
+    maxLength: [32, "Password cannot exceed 32 characters!"],
+    select: false,
   },
   role: {
     type: String,
-    required: true,
+    required: [true, "Please select a role"],
     enum: ["Job Seeker", "Employer"],
   },
-  date: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-// ✅ Hash password before saving
+
+//ENCRYPTING THE PASSWORD WHEN THE USER REGISTERS OR MODIFIES HIS PASSWORD
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password")) {
+    next();
+  }
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
-// ✅ Compare entered password with hashed password
+//COMPARING THE USER PASSWORD ENTERED BY USER WITH THE USER SAVED PASSWORD
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// ✅ Generate JWT token
-userSchema.methods.getJWTTOKEN = function () {
+//GENERATING A JWT TOKEN WHEN A USER REGISTERS OR LOGINS, IT DEPENDS ON OUR CODE THAT WHEN DO WE NEED TO GENERATE THE JWT TOKEN WHEN THE USER LOGIN OR REGISTER OR FOR BOTH. 
+userSchema.methods.getJWTToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRE,
   });

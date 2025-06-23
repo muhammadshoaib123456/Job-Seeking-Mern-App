@@ -144,7 +144,6 @@ export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
 
 
 
-
 // ...............................explaination about above code................................................
 
 
