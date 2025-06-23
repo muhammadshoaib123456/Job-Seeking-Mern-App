@@ -9,7 +9,7 @@ import Home from './components/Home/home';
 import Jobs from './components/Job/jobs';
 import JobDetails from './components/Job/jobDetails';
 import MyJobs from './components/Job/myJobs';
-import PostJobs from './components/Job/postJobs';
+import PostJob from "./components/Job/postJobs"
 import Application from './components/Application/application';
 import MyApplications from './components/Application/myApplications';
 import NotFound from './components/NotFound/notFound';
