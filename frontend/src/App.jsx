@@ -39,7 +39,7 @@ const App = () => {
 
   return (
     <>
-      <BrowserRouter>
+      <Router>
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -55,7 +55,7 @@ const App = () => {
         </Routes>
         <Footer />
         <Toaster />
-      </BrowserRouter>
+      </Router>
     </>
   );
 };
