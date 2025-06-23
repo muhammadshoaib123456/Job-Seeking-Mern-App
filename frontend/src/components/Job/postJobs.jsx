@@ -31,7 +31,7 @@ const PostJob = () => {
     }
     await axios
       .post(
-        "http://localhost:5000/api/v1/job/post",
+        "https://job-seeking-mern-app-8ujq.vercel.app/api/v1/job/post",
         fixedSalary.length >= 4
           ? {
               title,

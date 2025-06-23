@@ -22,7 +22,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/user/register",
+        "https://job-seeking-mern-app-8ujq.vercel.app/api/v1/user/register",
         { name, phone, email, role, password },
         {
           headers: {
@@ -39,10 +39,8 @@ const Register = () => {
       setRole("");
       setIsAuthorized(true);
     } catch (error) {
-  const message = error?.response?.data?.message || "Something went wrong";
-  toast.error(message);
-}
-
+      toast.error(error.response.data.message);
+    }
   };
 
   if(isAuthorized){
@@ -75,7 +73,7 @@ const Register = () => {
               <div>
                 <input
                   type="text"
-                  placeholder="Shoaib"
+                  placeholder="Zeeshan"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
