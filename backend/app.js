@@ -14,11 +14,23 @@ config({ path: "./config/config.env" });
 
 const app = express();
 
-// ✅ CORS — Very important for Vercel/Netlify
+// ✅ Allowed Frontend Origins (for CORS)
+const allowedOrigins = [
+  "https://job-seeking-mern-app.vercel.app",       // Production
+  "http://localhost:3000",                          // Local development
+];
+
+// ✅ CORS configuration with dynamic origin check
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://job-seeking-mern-app.vercel.app",
-    credentials: true, // ✅ Allow sending cookies
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS: Origin not allowed"));
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
@@ -36,7 +48,7 @@ app.use(
 
 // ✅ Test route
 app.get("/check", (req, res) => {
-  res.send("Backend running successfully");
+  res.send("Backend running successfully ✅");
 });
 
 // ✅ API Routes
@@ -47,8 +59,8 @@ app.use("/api/v1/application", applicationRouter);
 // ✅ Connect to MongoDB
 dbConnection();
 
-// ✅ Global error middleware
+// ✅ Global error handler
 app.use(errorMiddleware);
 
-// ✅ Export app
+// ✅ Export app for server.js or index.js
 export default app;
