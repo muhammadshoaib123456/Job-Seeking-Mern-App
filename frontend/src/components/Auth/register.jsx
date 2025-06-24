@@ -1,182 +1,5 @@
-import React, { useContext, useState } from "react";
-import { FaRegUser } from "react-icons/fa";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { RiLock2Fill } from "react-icons/ri";
-import { FaPencilAlt } from "react-icons/fa";
-import { FaPhoneFlip } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { Context } from "../../main";
 
-const Register = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-
-  const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
-  const navigate = useNavigate(); // ✅ Better control than <Navigate />
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post(
-        "https://job-seeking-mern-app-8ujq.vercel.app/api/v1/user/register",
-        { name, phone, email, role, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      toast.success(data.message);
-
-      // ✅ Set user and auth
-      setUser(data.user);
-      setIsAuthorized(true);
-
-      // ✅ Redirect to home
-      navigate("/");
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Registration failed");
-    }
-  };
-
-  return (
-    <>
-      <section className="authPage">
-        <div className="container">
-          <div className="header">
-            <img src="/JobZeelogo.png" alt="logo" />
-            <h3>Create a new account</h3>
-          </div>
-          <form onSubmit={handleRegister}>
-            <div className="inputTag">
-              <label>Register As</label>
-              <div>
-                <select value={role} onChange={(e) => setRole(e.target.value)} required>
-                  <option value="">Select Role</option>
-                  <option value="Employer">Employer</option>
-                  <option value="Job Seeker">Job Seeker</option>
-                </select>
-                <FaRegUser />
-              </div>
-            </div>
-            <div className="inputTag">
-              <label>Name</label>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Shoaib"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-                <FaPencilAlt />
-              </div>
-            </div>
-            <div className="inputTag">
-              <label>Email Address</label>
-              <div>
-                <input
-                  type="email"
-                  placeholder="sb@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <MdOutlineMailOutline />
-              </div>
-            </div>
-            <div className="inputTag">
-              <label>Phone Number</label>
-              <div>
-                <input
-                  type="number"
-                  placeholder="12345678"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-                <FaPhoneFlip />
-              </div>
-            </div>
-            <div className="inputTag">
-              <label>Password</label>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Your Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <RiLock2Fill />
-              </div>
-            </div>
-            <button type="submit">Register</button>
-            <Link to={"/login"}>Login Now</Link>
-          </form>
-        </div>
-        <div className="banner">
-          <img src="/register.png" alt="register" />
-        </div>
-      </section>
-    </>
-  );
-};
-
-export default Register;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//chat gpt code
 
 
 // import React, { useContext, useState } from "react";
@@ -185,7 +8,7 @@ export default Register;
 // import { RiLock2Fill } from "react-icons/ri";
 // import { FaPencilAlt } from "react-icons/fa";
 // import { FaPhoneFlip } from "react-icons/fa6";
-// import { Link, Navigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
 // import toast from "react-hot-toast";
 // import { Context } from "../../main";
@@ -197,7 +20,8 @@ export default Register;
 //   const [password, setPassword] = useState("");
 //   const [role, setRole] = useState("");
 
-//   const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
+//   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+//   const navigate = useNavigate(); // ✅ Better control than <Navigate />
 
 //   const handleRegister = async (e) => {
 //     e.preventDefault();
@@ -212,22 +36,19 @@ export default Register;
 //           withCredentials: true,
 //         }
 //       );
+
 //       toast.success(data.message);
-//       setName("");
-//       setEmail("");
-//       setPassword("");
-//       setPhone("");
-//       setRole("");
+
+//       // ✅ Set user and auth
+//       setUser(data.user);
 //       setIsAuthorized(true);
+
+//       // ✅ Redirect to home
+//       navigate("/");
 //     } catch (error) {
-//       toast.error(error.response.data.message);
+//       toast.error(error?.response?.data?.message || "Registration failed");
 //     }
 //   };
-
-//   if(isAuthorized){
-//     return <Navigate to={'/'}/>
-//   }
-
 
 //   return (
 //     <>
@@ -237,11 +58,11 @@ export default Register;
 //             <img src="/JobZeelogo.png" alt="logo" />
 //             <h3>Create a new account</h3>
 //           </div>
-//           <form>
+//           <form onSubmit={handleRegister}>
 //             <div className="inputTag">
 //               <label>Register As</label>
 //               <div>
-//                 <select value={role} onChange={(e) => setRole(e.target.value)}>
+//                 <select value={role} onChange={(e) => setRole(e.target.value)} required>
 //                   <option value="">Select Role</option>
 //                   <option value="Employer">Employer</option>
 //                   <option value="Job Seeker">Job Seeker</option>
@@ -254,9 +75,10 @@ export default Register;
 //               <div>
 //                 <input
 //                   type="text"
-//                   placeholder="Zeeshan"
+//                   placeholder="Shoaib"
 //                   value={name}
 //                   onChange={(e) => setName(e.target.value)}
+//                   required
 //                 />
 //                 <FaPencilAlt />
 //               </div>
@@ -266,9 +88,10 @@ export default Register;
 //               <div>
 //                 <input
 //                   type="email"
-//                   placeholder="zk@gmail.com"
+//                   placeholder="sb@gmail.com"
 //                   value={email}
 //                   onChange={(e) => setEmail(e.target.value)}
+//                   required
 //                 />
 //                 <MdOutlineMailOutline />
 //               </div>
@@ -281,6 +104,7 @@ export default Register;
 //                   placeholder="12345678"
 //                   value={phone}
 //                   onChange={(e) => setPhone(e.target.value)}
+//                   required
 //                 />
 //                 <FaPhoneFlip />
 //               </div>
@@ -293,18 +117,17 @@ export default Register;
 //                   placeholder="Your Password"
 //                   value={password}
 //                   onChange={(e) => setPassword(e.target.value)}
+//                   required
 //                 />
 //                 <RiLock2Fill />
 //               </div>
 //             </div>
-//             <button type="submit" onClick={handleRegister}>
-//               Register
-//             </button>
+//             <button type="submit">Register</button>
 //             <Link to={"/login"}>Login Now</Link>
 //           </form>
 //         </div>
 //         <div className="banner">
-//           <img src="/register.png" alt="login" />
+//           <img src="/register.png" alt="register" />
 //         </div>
 //       </section>
 //     </>
@@ -312,3 +135,184 @@ export default Register;
 // };
 
 // export default Register;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// my code
+
+import React, { useContext, useState } from "react";
+import { FaRegUser } from "react-icons/fa";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { RiLock2Fill } from "react-icons/ri";
+import { FaPencilAlt } from "react-icons/fa";
+import { FaPhoneFlip } from "react-icons/fa6";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Context } from "../../main";
+
+const Register = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+
+  const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        "https://job-seeking-mern-app-8ujq.vercel.app/api/v1/user/register",
+        { name, phone, email, role, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      toast.success(data.message);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setPhone("");
+      setRole("");
+      setIsAuthorized(true);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  if(isAuthorized){
+    return <Navigate to={'/'}/>
+  }
+
+
+  return (
+    <>
+      <section className="authPage">
+        <div className="container">
+          <div className="header">
+            <img src="/JobZeelogo.png" alt="logo" />
+            <h3>Create a new account</h3>
+          </div>
+          <form>
+            <div className="inputTag">
+              <label>Register As</label>
+              <div>
+                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                  <option value="">Select Role</option>
+                  <option value="Employer">Employer</option>
+                  <option value="Job Seeker">Job Seeker</option>
+                </select>
+                <FaRegUser />
+              </div>
+            </div>
+            <div className="inputTag">
+              <label>Name</label>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Zeeshan"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <FaPencilAlt />
+              </div>
+            </div>
+            <div className="inputTag">
+              <label>Email Address</label>
+              <div>
+                <input
+                  type="email"
+                  placeholder="zk@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <MdOutlineMailOutline />
+              </div>
+            </div>
+            <div className="inputTag">
+              <label>Phone Number</label>
+              <div>
+                <input
+                  type="number"
+                  placeholder="12345678"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                <FaPhoneFlip />
+              </div>
+            </div>
+            <div className="inputTag">
+              <label>Password</label>
+              <div>
+                <input
+                  type="password"
+                  placeholder="Your Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <RiLock2Fill />
+              </div>
+            </div>
+            <button type="submit" onClick={handleRegister}>
+              Register
+            </button>
+            <Link to={"/login"}>Login Now</Link>
+          </form>
+        </div>
+        <div className="banner">
+          <img src="/register.png" alt="login" />
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Register;
